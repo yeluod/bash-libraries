@@ -6,6 +6,9 @@ log() {
   local msg_type="$1"
   local msg="$2"
   case "$msg_type" in
+    noLine)
+      echo -n -e "\e[32m[INFO] $msg\e[0m"  # Green
+      ;;
     info)
       echo -e "\e[32m[INFO] $msg\e[0m"  # Green
       ;;
@@ -25,7 +28,7 @@ log() {
 set_time_zone() {
   log "info" 'Starting to set timezone ......'
   while true; do
-    log "info" 'Please enter the timezone (press enter to use the default timezone "Asia/Shanghai"): '
+    log "noLine" 'Please enter the timezone (press enter to use the default timezone "Asia/Shanghai"): '
     read -r timezone
     timezone=${timezone:-"Asia/Shanghai"}
 
@@ -44,12 +47,12 @@ set_time_zone() {
 set_scheduled_sync_time(){
   log "info" 'Starting to set up time synchronization task ......'
 
-  log "info" 'Please enter the cron expression (press enter to use the default expression "0 */1 * * *"): '
+  log "noLine" 'Please enter the cron expression (press enter to use the default expression "0 */1 * * *"): '
   read -r cron_expr
   cron_expr=${cron_expr:-"0 */1 * * *"}
 
   while true; do
-    log "info" 'Please enter the NTP server (press enter to use the default server "ntp1.aliyun.com"): '
+    log "noLine" 'Please enter the NTP server (press enter to use the default server "ntp1.aliyun.com"): '
     read -r ntp_server
     ntp_server=${ntp_server:-"ntp1.aliyun.com"}
 
