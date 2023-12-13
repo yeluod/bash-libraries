@@ -45,14 +45,17 @@ set_fd_limit() {
 
   log 'info' 'Setting system limits in /etc/security/limits.conf ......'
 
-  cat > /etc/security/limits.conf <<EOF
-* soft noproc 65535
-* hard noproc 65535
-* soft nofile 65535
-* hard nofile 65535
-* soft memlock unlimited
-* hard memlock unlimited
-EOF
+  for limit in noproc nofile memlock; do
+    for type in soft hard; do
+      if grep -q "^* ${type} ${limit}" /etc/security/limits.conf; then
+        # If the line exists, modify it
+        sed -i "/^* ${type} ${limit}/c\\* ${type} ${limit} $(if [ "${limit}" = 'memlock' ]; then echo 'unlimited'; else echo '65535'; fi)" /etc/security/limits.conf
+      else
+        # If the line does not exist, add it
+        echo "* ${type} ${limit} $(if [ "${limit}" = 'memlock' ]; then echo 'unlimited'; else echo '65535'; fi)" >> /etc/security/limits.conf
+      fi
+    done
+  done
 
   log 'info' 'Reloading system parameters with sysctl ......'
   sudo sysctl --system
