@@ -4,7 +4,7 @@ set -e
 
 # Set timezone
 set_time_zone() {
-  echo 'Please enter the timezone (press enter to use the default timezone "Asia/Shanghai"):'
+  echo -n 'Please enter the timezone (press enter to use the default timezone "Asia/Shanghai"):'
   read -r timezone
   timezone=${timezone:-"Asia/Shanghai"}
 
