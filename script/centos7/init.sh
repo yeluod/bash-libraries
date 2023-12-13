@@ -7,7 +7,7 @@ log() {
   local msg="$2"
   case "$msg_type" in
     noLine)
-      echo -n -e "\e[32m[INFO] $msg\e[0m"  # Green
+      echo -n "$msg\e[0m"  # Green
       ;;
     info)
       echo -e "\e[32m[INFO] $msg\e[0m"  # Green
